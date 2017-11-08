@@ -7,6 +7,12 @@
 //
 
 #import "AppDelegate.h"
+#import "VCFirst.h"
+#import "VCSecond.h"
+#import "VCThird.h"
+#import "VC4.h"
+#import "VC5.h"
+#import "VC6.h"
 
 @interface AppDelegate ()
 
@@ -17,9 +23,62 @@
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     // Override point for customization after application launch.
+    
+    self.window = [[UIWindow alloc] initWithFrame:[UIScreen mainScreen].bounds];
+    [self.window makeKeyAndVisible];
+    
+    
+    //创建一组视图控制器
+    VCFirst *vc01 = [[VCFirst alloc] init];
+    VCSecond *vc02 = [[VCSecond alloc] init];
+    VCThird *vc03 = [[VCThird alloc] init];
+    VC4 *vc04 = [[VC4 alloc] init];
+    VC5 *vc05 = [[VC5 alloc]init];
+    VC6 *vc06 = [[VC6 alloc]init];
+    
+    vc01.title = @"视图1";
+    vc02.title = @"视图2";
+    vc03.title = @"视图3";
+    vc04.title = @"视图4";
+    vc05.title = @"视图5";
+    vc06.title = @"视图6";
+    
+    //创建数组
+    NSArray *arrayVC = [NSArray arrayWithObjects:vc01,vc02,vc03,vc04,vc05,vc06 ,nil];
+    
+    UITabBarController *tbc = [[UITabBarController alloc] init];
+    tbc.viewControllers = arrayVC;
+    tbc.tabBar.translucent = NO;
+    
+    //改变工具栏颜色
+    tbc.tabBar.barTintColor = [UIColor redColor];
+    //改变按钮风格颜色
+    tbc.tabBar.tintColor = [UIColor blackColor];
+    self.window.rootViewController = tbc;
+    tbc.delegate = self;
     return YES;
 }
 
+-(void) tabBarController:(UITabBarController *)tabBarController willBeginCustomizingViewControllers:(NSArray<__kindof UIViewController *> *)viewControllers{
+    NSLog(@"编辑器前");
+}
+
+-(void) tabBarController:(UITabBarController *)tabBarController willEndCustomizingViewControllers:(NSArray<__kindof UIViewController *> *)viewControllers changed:(BOOL)changed
+{
+    NSLog(@"即将结束前");
+}
+-(void) tabBarController:(UITabBarController *)tabBarController didEndCustomizingViewControllers:(NSArray<__kindof UIViewController *> *)viewControllers changed:(BOOL)changed{
+ 
+    if(changed == YES){
+        NSLog(@"顺序已经改变");
+    }
+    NSLog(@"已经结束编辑");
+}
+
+-(void) tabBarController:(UITabBarController *)tabBarController didSelectViewController:(UIViewController *)viewController
+{
+    NSLog(@"选中控制器对象");
+}
 
 - (void)applicationWillResignActive:(UIApplication *)application {
     // Sent when the application is about to move from active to inactive state. This can occur for certain types of temporary interruptions (such as an incoming phone call or SMS message) or when the user quits the application and it begins the transition to the background state.
